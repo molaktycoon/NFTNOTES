@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "500001336140",
+    "project_id": "nftnotess",
+    "storage_bucket": "nftnotess.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500001336140:android:c4284c7978954bb64cbde9",
+        "android_client_info": {
+          "package_name": "com.molaktycoon.nftnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "500001336140-8npuafe2nblr1qv2hcr56s42s9femh88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyxvGxq5um4284nQCQxWXkNlrdiuhguKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "500001336140-8npuafe2nblr1qv2hcr56s42s9femh88.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
