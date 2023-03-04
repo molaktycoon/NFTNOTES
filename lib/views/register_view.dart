@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
-
+import 'package:nftnotes/utilities/show_error_diaglog.dart';
 import 'package:nftnotes/constants/routes.dart';
 
 class RegisterView extends StatefulWidget {
@@ -28,59 +27,83 @@ class _RegisterViewState extends State<RegisterView> {
     _password.dispose();
     super.dispose();
   }
-@override
+
+  @override
   Widget build(BuildContext context) {
-   return Scaffold(
-    appBar: AppBar(title: const Text('Register'),
-    ),
-     body: Column(
-          children: [ 
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Register'),
+      ),
+      body: Column(
+        children: [
           TextField(
             controller: _email,
             enableSuggestions: false,
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-              hintText: 'Enter Your Email here'
-              ),
+            decoration:
+                const InputDecoration(hintText: 'Enter Your Email here'),
           ),
-           TextField(
+          TextField(
             controller: _password,
             obscureText: true,
             enableSuggestions: false,
             autocorrect: false,
-            decoration: const InputDecoration(
-              hintText: 'Enter Your Password Here'
-              
-              ),
-           ),
-            TextButton(
-              onPressed: () async{
-                
-                final email = _email.text;
-                final password = _password.text;
-                try {
-                  final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                  email: email, 
-                  password: password);
-                  devtools.log(userCredential.toString());
-                } on FirebaseAuthException catch (e) {
-                  if (e.code == 'weak-password'){
-                  devtools.log('Weak Password');
-                }else if (e.code == 'email-already-in-use') {
-                  devtools.log('Email already in Use');
-                }else if (e.code == 'invalid-email'){
-                  devtools.log('Invalid Email');
-                }
-                }
-                }, 
-            child: const Text('Register'),
-            ),
-            TextButton(onPressed: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
-            }, child: const Text('Already Registered? Login Here!'))
-          ],
+            decoration:
+                const InputDecoration(hintText: 'Enter Your Password Here'),
           ),
-   );
-}
+          TextButton(
+            onPressed: () async {
+              final email = _email.text;
+              final password = _password.text;
+              try {
+                await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                  email: email,
+                  password: password,
+                );
+                final user = FirebaseAuth.instance.currentUser;
+                await user?.sendEmailVerification();
+                Navigator.of(context).pushNamed(verifyEmailRoute);
+              } on FirebaseAuthException catch (e) {
+                if (e.code == 'weak-password') {
+                  await showErrorDiaglog(
+                    context,
+                    'Weak Password',
+                  );
+                } else if (e.code == 'email-already-in-use') {
+                  await showErrorDiaglog(
+                    context,
+                    'Email is already in use',
+                  );
+                } else if (e.code == 'invalid-email') {
+                  await showErrorDiaglog(
+                    context,
+                    'This is an invalid email address',
+                  );
+                } else {
+                  await showErrorDiaglog(
+                    context,
+                    'Error: ${e.code}',
+                  );
+                }
+              } catch (e) {
+                await showErrorDiaglog(
+                  context,
+                  e.toString(),
+                );
+              }
+            },
+            child: const Text('Register'),
+          ),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(loginRoute, (route) => false);
+              },
+              child: const Text('Already Registered? Login Here!'))
+
+        ],
+      ),
+    );
+  }
 }
