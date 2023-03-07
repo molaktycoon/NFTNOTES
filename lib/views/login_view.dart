@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nftnotes/constants/routes.dart';
+import 'package:nftnotes/services/auth/auth_exceptions.dart';
+import 'package:nftnotes/services/auth/auth_service.dart';
 import 'package:nftnotes/utilities/show_error_diaglog.dart';
 
 class LoginView extends StatefulWidget {
@@ -57,49 +58,41 @@ class _LoginViewState extends State<LoginView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
+                await AuthService.firebase().logIn(
                   email: email,
                   password: password,
                 );
-                final user = FirebaseAuth.instance.currentUser;
-                if(user?.emailVerified ?? false){
+                final user = AuthService.firebase().currentUser;
+                if (user?.isEmailVerified ?? false) {
                   //User's email is Verified
+                  if (!mounted) return;  
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                  notesRoute,
-                  (route) => false,
-                );
-                }else {
-                  //User email is NOT verified
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                  verifyEmailRoute,
-                  (route) => false,
-                );
-                }
-                
-              } on FirebaseAuthException catch (e) {
-                if (e.code == 'user-not-found') {
-                  await showErrorDiaglog(
-                    context,
-                    'User not found',
+                    notesRoute,
+                    (route) => false,
                   );
                 } else {
-                  if (e.code == 'wrong-password') {
-                    await showErrorDiaglog(
-                      context,
-                      'Wrong Credentials',
-                    );
-                  }else {
-                   await showErrorDiaglog(
-                      context,
-                      'Error: ${e.code}',
-                    );
+                  //User email is NOT verified
+                  if (!mounted) return;  
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    verifyEmailRoute,
+                    (route) => false,
+                  );
                 }
-                } 
-              } catch (e){
+              } on UserNotFoundAuthException {
                 await showErrorDiaglog(
-                      context,
-                    e.toString(),
-                    );
+                  context,
+                  'User not found',
+                );
+              } on WrongPasswordAuthException {
+                await showErrorDiaglog(
+                  context,
+                  'Wrong Credentials',
+                );
+              } on GenericAuthException {
+                await showErrorDiaglog(
+                  context,
+                  'Authentication Error',
+                );
               }
             },
             child: const Text('Login'),
@@ -117,4 +110,3 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
-
