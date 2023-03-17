@@ -11,33 +11,38 @@ class NotesService {
   Database? _db;
 
   List<DatabaseNote> _notes = [];
-  
-    NotesService._sharedInstance();
+
   static final NotesService _shared = NotesService._sharedInstance();
-  factory NotesService() => _shared; 
+  NotesService._sharedInstance() {
+    _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
+      onListen: () {
+        _notesStreamController.sink.add(_notes);
+      },
+    );
+  }
+  factory NotesService() => _shared;
 
-  final _notesStreamController =
-      StreamController<List<DatabaseNote>>.broadcast();
-      Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
 
-      Future<DatabaseUser> getOrCreateUser({required String email}) async{
-        try {
-          final user = await getUser(email: email);
-        return user;
-        } on CouldNotFindUser {
-          final createdUser = await createUser(email: email);
-          return createdUser;
-        }catch (e){
-          rethrow;
-        }
-        
-      }
+  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
 
-Future<void> _cacheNote() async{
-  final allNotes = await getAllNote();
-  _notes = allNotes.toList();
-  _notesStreamController.add(_notes);
-}
+  Future<DatabaseUser> getOrCreateUser({required String email}) async {
+    try {
+      final user = await getUser(email: email);
+      return user;
+    } on CouldNotFindUser {
+      final createdUser = await createUser(email: email);
+      return createdUser;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> _cacheNote() async {
+    final allNotes = await getAllNote();
+    _notes = allNotes.toList();
+    _notesStreamController.add(_notes);
+  }
 
   Future<DatabaseNote> updateNote({
     required DatabaseNote note,
@@ -65,7 +70,7 @@ Future<void> _cacheNote() async{
   }
 
   Future<Iterable<DatabaseNote>> getAllNote() async {
-        await _ensureDbIsOpen();
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final notes = await db.query(noteTable);
     return notes.map((noteRow) => DatabaseNote.fromRow(noteRow));
@@ -110,7 +115,7 @@ Future<void> _cacheNote() async{
     );
     if (deletedCount == 0) {
       throw CouldNotDeleteNote();
-    }else {
+    } else {
       _notes.removeWhere((note) => note.id == id);
       _notesStreamController.add(_notes);
     }
@@ -222,13 +227,13 @@ Future<void> _cacheNote() async{
     }
   }
 
-Future <void> _ensureDbIsOpen() async{
-try {
-  await open();
-}on DatabaseAlreadyOpenException {
-  //empty
-}
-}
+  Future<void> _ensureDbIsOpen() async {
+    try {
+      await open();
+    } on DatabaseAlreadyOpenException {
+      //empty
+    }
+  }
 
   Future<void> close() async {
     final db = _db;
@@ -310,7 +315,7 @@ const createUserTable = '''CREATE TABLE IF NOT EXISTS "user"  (
 	PRIMARY KEY("id" AUTOINCREMENT)
 );''';
 
-const createNoteTable = ''' CREATE TABLE IF NOT EXIST "note" (
+const createNoteTable = ''' CREATE TABLE IF NOT EXISTS "note" (
 	"id"	INTEGER NOT NULL,
 	"user_id"	INTEGER NOT NULL,
 	"text"	TEXT NOT NULL,
