@@ -34,6 +34,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+                backgroundColor: Colors.indigo,
         title: const Text('Register'),
       ),
       body: Column(
@@ -88,14 +89,29 @@ class _RegisterViewState extends State<RegisterView> {
                 );
               }
             },
-            child: const Text('Register'),
+            child: const Text('Register',
+            style: TextStyle(
+              fontFamily: 'Signatra',
+              fontSize: 20.0,
+              color: Colors.red,
+            ) ,
+            ),
+            
+
+            
           ),
           TextButton(
               onPressed: () {
                 Navigator.of(context)
                     .pushNamedAndRemoveUntil(loginRoute, (route) => false);
               },
-              child: const Text('Already Registered? Login Here!'))
+              child: const Text('Already Registered? Login Here!', 
+              style: TextStyle(
+              fontFamily: 'Signatra',
+              fontSize: 20.0,
+              color: Colors.red,
+            ) ,
+              ), )
         ],
       ),
     );

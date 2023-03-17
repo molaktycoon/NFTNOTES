@@ -33,7 +33,11 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.indigo,
         title: const Text('Login'),
+        
+        
+        
       ),
       body: Column(
         children: [
@@ -95,7 +99,13 @@ class _LoginViewState extends State<LoginView> {
                 );
               }
             },
-            child: const Text('Login'),
+            child: const Text('Login', 
+            style: TextStyle(
+              fontFamily: 'Signatra',
+              fontSize: 25.0,
+              color: Colors.red,
+            ) ,
+            ),
           ),
           TextButton(
               onPressed: () {
@@ -104,7 +114,13 @@ class _LoginViewState extends State<LoginView> {
                   (route) => false,
                 );
               },
-              child: const Text('Not Register Yet? Register Here!'))
+              child: const Text('Not Register Yet? Register Here!',
+             style: TextStyle(
+              fontFamily: 'Signatra',
+              fontSize: 20.0,
+              color: Colors.red,
+            ) , ),
+              )
         ],
       ),
     );
