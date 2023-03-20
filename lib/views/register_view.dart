@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nftnotes/services/auth/auth_exceptions.dart';
-import 'package:nftnotes/utilities/show_error_diaglog.dart';
 import 'package:nftnotes/constants/routes.dart';
-
 import '../services/auth/auth_service.dart';
+import 'package:nftnotes/utilities/dialogs/error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -34,7 +33,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-                backgroundColor: Colors.indigo,
+        backgroundColor: Colors.indigo,
         title: const Text('Register'),
       ),
       body: Column(
@@ -65,53 +64,53 @@ class _RegisterViewState extends State<RegisterView> {
                   password: password,
                 );
                 AuthService.firebase().sendEmailVerification();
-                if (!mounted) return;  
+                if (!mounted) return;
                 Navigator.of(context).pushNamed(verifyEmailRoute);
               } on WeakPasswordAuthException {
-                await showErrorDiaglog(
+                await showErrorDialog(
                   context,
                   'Weak Password',
                 );
               } on EmailAlreadyInUseAuthException {
-                await showErrorDiaglog(
+                await showErrorDialog(
                   context,
                   'Email is already in use',
                 );
               } on InvalidEmailAuthException {
-                await showErrorDiaglog(
+                await showErrorDialog(
                   context,
                   'This is an invalid email address',
                 );
               } on GenericAuthException {
-                await showErrorDiaglog(
+                await showErrorDialog(
                   context,
                   'Failed to register',
                 );
               }
             },
-            child: const Text('Register',
-            style: TextStyle(
-              fontFamily: 'Signatra',
-              fontSize: 20.0,
-              color: Colors.red,
-            ) ,
+            child: const Text(
+              'Register',
+              style: TextStyle(
+                fontFamily: 'Signatra',
+                fontSize: 20.0,
+                color: Colors.red,
+              ),
             ),
-            
-
-            
           ),
           TextButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil(loginRoute, (route) => false);
-              },
-              child: const Text('Already Registered? Login Here!', 
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(loginRoute, (route) => false);
+            },
+            child: const Text(
+              'Already Registered? Login Here!',
               style: TextStyle(
-              fontFamily: 'Signatra',
-              fontSize: 20.0,
-              color: Colors.red,
-            ) ,
-              ), )
+                fontFamily: 'Signatra',
+                fontSize: 20.0,
+                color: Colors.red,
+              ),
+            ),
+          )
         ],
       ),
     );

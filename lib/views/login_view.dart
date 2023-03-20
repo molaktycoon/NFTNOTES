@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nftnotes/constants/routes.dart';
 import 'package:nftnotes/services/auth/auth_exceptions.dart';
 import 'package:nftnotes/services/auth/auth_service.dart';
-import 'package:nftnotes/utilities/show_error_diaglog.dart';
+import 'package:nftnotes/utilities/dialogs/error_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -35,9 +35,6 @@ class _LoginViewState extends State<LoginView> {
       appBar: AppBar(
         backgroundColor: Colors.indigo,
         title: const Text('Login'),
-        
-        
-        
       ),
       body: Column(
         children: [
@@ -69,58 +66,61 @@ class _LoginViewState extends State<LoginView> {
                 final user = AuthService.firebase().currentUser;
                 if (user?.isEmailVerified ?? false) {
                   //User's email is Verified
-                  if (!mounted) return;  
+                  if (!mounted) return;
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     notesRoute,
                     (route) => false,
                   );
                 } else {
                   //User email is NOT verified
-                  if (!mounted) return;  
+                  if (!mounted) return;
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     verifyEmailRoute,
                     (route) => false,
                   );
                 }
               } on UserNotFoundAuthException {
-                await showErrorDiaglog(
+                await showErrorDialog(
                   context,
                   'User not found',
                 );
               } on WrongPasswordAuthException {
-                await showErrorDiaglog(
+                await showErrorDialog(
                   context,
                   'Wrong Credentials',
                 );
               } on GenericAuthException {
-                await showErrorDiaglog(
+                await showErrorDialog(
                   context,
                   'Authentication Error',
                 );
               }
             },
-            child: const Text('Login', 
-            style: TextStyle(
-              fontFamily: 'Signatra',
-              fontSize: 25.0,
-              color: Colors.red,
-            ) ,
+            child: const Text(
+              'Login',
+              style: TextStyle(
+                fontFamily: 'Signatra',
+                fontSize: 25.0,
+                color: Colors.red,
+              ),
             ),
           ),
           TextButton(
-              onPressed: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  registerRoute,
-                  (route) => false,
-                );
-              },
-              child: const Text('Not Register Yet? Register Here!',
-             style: TextStyle(
-              fontFamily: 'Signatra',
-              fontSize: 20.0,
-              color: Colors.red,
-            ) , ),
-              )
+            onPressed: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                registerRoute,
+                (route) => false,
+              );
+            },
+            child: const Text(
+              'Not Register Yet? Register Here!',
+              style: TextStyle(
+                fontFamily: 'Signatra',
+                fontSize: 20.0,
+                color: Colors.red,
+              ),
+            ),
+          )
         ],
       ),
     );
