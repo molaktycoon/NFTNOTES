@@ -6,10 +6,10 @@ import 'package:nftnotes/services/auth/bloc/auth_event.dart';
 import 'package:nftnotes/services/auth/bloc/auth_state.dart';
 import 'package:nftnotes/services/auth/firebase_auth_provider.dart';
 import 'package:nftnotes/views/login_view.dart';
+import 'package:nftnotes/views/register_view.dart';
 import 'package:nftnotes/views/verify_email_view.dart';
 import 'notes/create_update_note_view.dart';
 import 'notes/note_view.dart';
-import 'views/register_view.dart';
 
 void main() {
   runApp(
@@ -23,10 +23,7 @@ void main() {
         child: const HomePage(),
       ),
       routes: {
-        loginRoute: (context) => const LoginView(),
-        registerRoute: (context) => const RegisterView(),
-        notesRoute: (context) => const NotesView(),
-        verifyEmailRoute: (context) => const VerifyEmailView(),
+      
         createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
       },
     ),
@@ -47,7 +44,9 @@ return BlocBuilder<AuthBloc, AuthState>(
       return const VerifyEmailView();
     }else if (state is AuthStateLogOut){
       return const LoginView();
-    }else{
+    } else if(state is AuthStateRegistering){
+      return const RegisterView();
+    }  else{
       return const Scaffold(
         body: CircularProgressIndicator(),
       );
