@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nftnotes/constants/routes.dart';
 import 'package:nftnotes/services/auth/auth_exceptions.dart';
 import 'package:nftnotes/services/auth/bloc/auth_bloc.dart';
+import 'package:nftnotes/services/auth/bloc/auth_state.dart';
 import 'package:nftnotes/utilities/dialogs/error_dialog.dart';
 
 import '../services/auth/bloc/auth_event.dart';
@@ -57,40 +58,61 @@ class _LoginViewState extends State<LoginView> {
             decoration:
                 const InputDecoration(hintText: 'Enter Your Password Here'),
           ),
-          TextButton(
-            onPressed: () async {
-              final email = _email.text;
-              final password = _password.text;
-              try {
-                context.read<AuthBloc>().add(AuthEventLogIn(
-                      email,
-                      password,
-                    ),
-                    );
-                    
-              } on UserNotFoundAuthException {
-                await showErrorDialog(
-                  context,
-                  'User not found',
-                );
-              } on WrongPasswordAuthException {
-                await showErrorDialog(
-                  context,
-                  'Wrong Credentials',
-                );
-              } on GenericAuthException {
-                await showErrorDialog(
-                  context,
-                  'Authentication Error',
-                );
+          BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) async{
+              if (state is AuthStateLogOut) {
+                if(state.exception is UserNotFoundAuthException){
+                  await showErrorDialog(context, 'User not found');
+                } else if(state.exception is WrongPasswordAuthException){
+                  await showErrorDialog(context, 'Wrong Credentials');
+                }else if (state.exception is GenericAuthException){
+                  await showErrorDialog(context, 'Authentication error');
+                }
               }
             },
-            child: const Text(
-              'Login',
-              style: TextStyle(
-                fontFamily: 'Signatra',
-                fontSize: 25.0,
-                color: Colors.red,
+            child: TextButton(
+              onPressed: () async {
+                final email = _email.text;
+                final password = _password.text;
+                context.read<AuthBloc>().add(
+                        AuthEventLogIn(
+                          email,
+                          password,
+                        ),
+                      );
+
+                      //we remove the try catch statement
+                // try {
+                //   context.read<AuthBloc>().add(
+                //         AuthEventLogIn(
+                //           email,
+                //           password,
+                //         ),
+                //       );
+                // } on UserNotFoundAuthException {
+                //   await showErrorDialog(
+                //     context,
+                //     'User not found',
+                //   );
+                // } on WrongPasswordAuthException {
+                //   await showErrorDialog(
+                //     context,
+                //     'Wrong Credentials',
+                //   );
+                // } on GenericAuthException {
+                //   await showErrorDialog(
+                //     context,
+                //     'Authentication Error',
+                //   );
+                // }
+              },
+              child: const Text(
+                'Login',
+                style: TextStyle(
+                  fontFamily: 'Signatra',
+                  fontSize: 25.0,
+                  color: Colors.red,
+                ),
               ),
             ),
           ),
