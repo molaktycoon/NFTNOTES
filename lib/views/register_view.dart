@@ -52,89 +52,103 @@ class _RegisterViewState extends State<RegisterView> {
           backgroundColor: Colors.indigo,
           title: const Text('Register'),
         ),
-        body: Column(
-          children: [
-            TextField(
-              controller: _email,
-              enableSuggestions: false,
-              autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
-              decoration:
-                  const InputDecoration(hintText: 'Enter Your Email here'),
-            ),
-            TextField(
-              controller: _password,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration:
-                  const InputDecoration(hintText: 'Enter Your Password Here'),
-            ),
-            TextButton(
-              onPressed: () async {
-                final email = _email.text;
-                final password = _password.text;
-                context.read<AuthBloc>().add(AuthEventRegister(
-                      email,
-                      password,
-                    ));
-
-                //we use try catch statement here before
-                // try {
-                //   await AuthService.firebase().createUser(
-                //     email: email,
-                //     password: password,
-                //   );
-                //   AuthService.firebase().sendEmailVerification();
-                //   if (!mounted) return;
-                //   Navigator.of(context).pushNamed(verifyEmailRoute);
-                // } on WeakPasswordAuthException {
-                //   await showErrorDialog(
-                //     context,
-                //     'Weak Password',
-                //   );
-                // } on EmailAlreadyInUseAuthException {
-                //   await showErrorDialog(
-                //     context,
-                //     'Email is already in use',
-                //   );
-                // } on InvalidEmailAuthException {
-                //   await showErrorDialog(
-                //     context,
-                //     'This is an invalid email address',
-                //   );
-                // } on GenericAuthException {
-                //   await showErrorDialog(
-                //     context,
-                //     'Failed to register',
-                //   );
-                // }
-              },
-              child: const Text(
-                'Register',
-                style: TextStyle(
-                  fontFamily: 'Signatra',
-                  fontSize: 20.0,
-                  color: Colors.red,
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Enter your email and password to see your note'),
+              TextField(
+                controller: _email,
+                enableSuggestions: false,
+                autocorrect: false,
+                autofocus: true,
+                keyboardType: TextInputType.emailAddress,
+                decoration:
+                    const InputDecoration(hintText: 'Enter Your Email here'),
+              ),
+              TextField(
+                controller: _password,
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
+                decoration:
+                    const InputDecoration(hintText: 'Enter Your Password Here'),
+              ),
+              Center(
+                child: Column(
+                  children: [
+                    TextButton(
+                      onPressed: () async {
+                        final email = _email.text;
+                        final password = _password.text;
+                        context.read<AuthBloc>().add(AuthEventRegister(
+                              email,
+                              password,
+                            ));
+                      
+                        //we use try catch statement here before
+                        // try {
+                        //   await AuthService.firebase().createUser(
+                        //     email: email,
+                        //     password: password,
+                        //   );
+                        //   AuthService.firebase().sendEmailVerification();
+                        //   if (!mounted) return;
+                        //   Navigator.of(context).pushNamed(verifyEmailRoute);
+                        // } on WeakPasswordAuthException {
+                        //   await showErrorDialog(
+                        //     context,
+                        //     'Weak Password',
+                        //   );
+                        // } on EmailAlreadyInUseAuthException {
+                        //   await showErrorDialog(
+                        //     context,
+                        //     'Email is already in use',
+                        //   );
+                        // } on InvalidEmailAuthException {
+                        //   await showErrorDialog(
+                        //     context,
+                        //     'This is an invalid email address',
+                        //   );
+                        // } on GenericAuthException {
+                        //   await showErrorDialog(
+                        //     context,
+                        //     'Failed to register',
+                        //   );
+                        // }
+                      },
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(
+                          fontFamily: 'Signatra',
+                          fontSize: 20.0,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                 TextButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(const AuthEventLogOut(),);
+                  
+                  // Navigator.of(context)
+                  //     .pushNamedAndRemoveUntil(loginRoute, (route) => false);
+                },
+                child: const Text(
+                  'Already Registered? Login Here!',
+                  style: TextStyle(
+                    fontFamily: 'Signatra',
+                    fontSize: 20.0,
+                    color: Colors.red,
+                  ),
+                ),
+              )
+                  ],
                 ),
               ),
-            ),
-            TextButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(const AuthEventLogOut(),);
-                // Navigator.of(context)
-                //     .pushNamedAndRemoveUntil(loginRoute, (route) => false);
-              },
-              child: const Text(
-                'Already Registered? Login Here!',
-                style: TextStyle(
-                  fontFamily: 'Signatra',
-                  fontSize: 20.0,
-                  color: Colors.red,
-                ),
-              ),
-            )
-          ],
+              
+            ],
+          ),
         ),
       ),
     );

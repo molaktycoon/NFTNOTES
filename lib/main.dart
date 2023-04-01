@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nftnotes/constants/routes.dart';
+import 'package:nftnotes/helper/loading/loading_screen.dart';
 import 'package:nftnotes/services/auth/bloc/auth_bloc.dart';
 import 'package:nftnotes/services/auth/bloc/auth_event.dart';
 import 'package:nftnotes/services/auth/bloc/auth_state.dart';
@@ -10,6 +11,7 @@ import 'package:nftnotes/views/register_view.dart';
 import 'package:nftnotes/views/verify_email_view.dart';
 import 'notes/create_update_note_view.dart';
 import 'notes/note_view.dart';
+import 'views/forgot_password_view.dart';
 
 void main() {
   runApp(
@@ -19,11 +21,10 @@ void main() {
         primarySwatch: Colors.blue,
       ),
       home: BlocProvider<AuthBloc>(
-        create: (context) => AuthBloc (FirebaseAuthProvider()),
+        create: (context) => AuthBloc(FirebaseAuthProvider()),
         child: const HomePage(),
       ),
       routes: {
-      
         createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
       },
     ),
@@ -35,25 +36,37 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-context.read<AuthBloc>().add(const AuthEventInitialize());
-return BlocBuilder<AuthBloc, AuthState>(
-  builder: (context, state) {
-    if (state is AuthStateLoggedIn) {
-      return const NotesView();
-    }else if(state is AuthStateNeedsVerification){
-      return const VerifyEmailView();
-    }else if (state is AuthStateLogOut){
-      return const LoginView();
-    } else if(state is AuthStateRegistering){
-      return const RegisterView();
-    }  else{
-      return const Scaffold(
-        body: CircularProgressIndicator(),
-      );
-    }
-  },
-  );
-
+    context.read<AuthBloc>().add(const AuthEventInitialize());
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state.isLoading) {
+          LoadingScreen().show(
+            context: context,
+            text: state.loadingText ?? 'Please wait a moment',
+            //            text: state.loadingText   ?? 'Please wait a moment'  ,
+          );
+        } else {
+          LoadingScreen().hide();
+        }
+      },
+      builder: (context, state) {
+        if (state is AuthStateLoggedIn) {
+          return const NotesView();
+        } else if (state is AuthStateNeedsVerification) {
+          return const VerifyEmailView();
+        } else if (state is AuthStateLogOut) {
+          return const LoginView();
+        } else if (state is AuthStateForgetPassword) {
+          return const ForgetPasswordView();
+        } else if (state is AuthStateRegistering) {
+          return const RegisterView();
+        } else {
+          return const Scaffold(
+            body: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
   }
 }
 

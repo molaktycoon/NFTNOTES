@@ -68,6 +68,12 @@ void main() {
       expect(user, isNotNull);
       expect(user?.isEmailVerified, true);
     });
+    test('Should send reset email link to user', () async{
+           await provider.sendPasswordReset(toEmail: 'test@example.com');
+
+     expect('', isNotNull);
+        
+         });
     test('Should be able to log out and log in again', () async {
       await provider.logOut();
       await provider.logIn(
@@ -83,7 +89,7 @@ void main() {
 class NotInitializedException implements Exception {}
 
 class MockAuthProvider implements AuthProvider {
-  AuthUser? _user;
+  AuthUser?  _user;
   var _isInitialized = false;
   bool get isInitialized => _isInitialized;
   @override
@@ -149,5 +155,15 @@ class MockAuthProvider implements AuthProvider {
     );
     _user = newUser;
     //  implement sendEmailVerification
+  }
+  
+  @override
+  Future<void> sendPasswordReset({required String toEmail}) async{
+if(!isInitialized) throw NotInitializedException();
+final user = _user;
+    if (user == null) throw UserNotFoundAuthException();
+
+
+
   }
 }
