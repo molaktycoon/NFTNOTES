@@ -4,6 +4,7 @@ import 'package:nftnotes/utilities/generics/get_arguments.dart';
 import 'package:share_plus/share_plus.dart';
 import '../services/cloud/cloud_note.dart';
 import '../services/cloud/firebase_cloud_storage.dart';
+import '../ui/widgets/shared/globals.dart';
 import '../utilities/dialogs/cannot_share_empty_note_dialog.dart';
 
 class CreateUpdateNoteView extends StatefulWidget {
@@ -91,17 +92,20 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Global.mediumBlue,
         title: const Text('New Note'),
         actions: [
-          IconButton(onPressed: ()async {
-            final text = _textController.text;
-            if (_note == null || text.isEmpty) {
-              await showCannotShareEmptyNoteDialog(context); 
-              
-            }else {
-              Share.share(text);
-            }
-          }, icon: const Icon(Icons.share),)
+          IconButton(
+            onPressed: () async {
+              final text = _textController.text;
+              if (_note == null || text.isEmpty) {
+                await showCannotShareEmptyNoteDialog(context);
+              } else {
+                Share.share(text);
+              }
+            },
+            icon: const Icon(Icons.share),
+          )
         ],
       ),
       body: FutureBuilder(

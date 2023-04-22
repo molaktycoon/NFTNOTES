@@ -18,7 +18,7 @@ class NotesListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.builder(           
       itemCount: notes.length,
       itemBuilder: (context, index) {
         final note = notes.elementAt(index);

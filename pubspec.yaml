@@ -46,7 +46,13 @@ dependencies:
   flutter_bloc: ^8.1.2
   bloc: ^8.1.1
   equatable: ^2.0.5
-
+  flutter_launcher_icons: ^0.12.0
+  flutter_sound: ^9.2.13
+  flutter_audio_recorder2: ^0.0.2
+  audioplayers: ^4.0.1
+  permission_handler: ^10.2.0
+  provider: ^6.0.5
+ 
 dev_dependencies:
   flutter_test:
     sdk: flutter

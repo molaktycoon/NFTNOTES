@@ -7,6 +7,7 @@ import '../constants/routes.dart';
 import '../enums/menu_action.dart';
 import '../services/auth/auth_service.dart';
 import '../services/auth/bloc/auth_event.dart';
+import '../ui/widgets/shared/globals.dart';
 import '../utilities/dialogs/logout_dialog.dart';
 import 'notes_list_view.dart';
 
@@ -31,6 +32,8 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+                    backgroundColor: Global.mediumBlue,
+
           title: const Text('Your Notes'),
           actions: [
             IconButton(
@@ -89,6 +92,18 @@ class _NotesViewState extends State<NotesView> {
                 return const CircularProgressIndicator();
             }
           },
-        ));
+        ),
+        
+        floatingActionButton: FloatingActionButton(
+                    backgroundColor: Global.mediumBlue,
+
+    onPressed: () {
+ Navigator.of(context).pushNamed(recordingStatus);
+
+   },
+   child: const Icon(Icons.mic),
+   ),
+   
+        );
   }
 }

@@ -6,6 +6,9 @@ import 'package:nftnotes/services/auth/bloc/auth_event.dart';
 import 'package:nftnotes/services/auth/bloc/auth_state.dart';
 import 'package:nftnotes/utilities/dialogs/error_dialog.dart';
 
+import '../ui/widgets/button_widget.dart';
+import '../ui/widgets/shared/globals.dart';
+
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
@@ -49,7 +52,7 @@ class _RegisterViewState extends State<RegisterView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.indigo,
+                  backgroundColor:Global.mediumBlue,
           title: const Text('Register'),
         ),
         body: Padding(
@@ -73,7 +76,16 @@ class _RegisterViewState extends State<RegisterView> {
                 enableSuggestions: false,
                 autocorrect: false,
                 decoration:
-                    const InputDecoration(hintText: 'Enter Your Password Here'),
+                    const InputDecoration(hintText: 'Enter Your Password Here',
+                    // prefixIcon:  Icon(Icons.security),
+                    suffixIcon: Align(
+          widthFactor: 1.0,
+          heightFactor: 1.0,
+          child: Icon(
+            Icons.remove_red_eye,
+          ),
+          )
+                    ),
               ),
               Center(
                 child: Column(
@@ -118,14 +130,12 @@ class _RegisterViewState extends State<RegisterView> {
                         //   );
                         // }
                       },
-                      child: const Text(
-                        'Register',
-                        style: TextStyle(
-                          fontFamily: 'Signatra',
-                          fontSize: 20.0,
-                          color: Colors.red,
-                        ),
-                      ),
+                      child: 
+                       const ButtonWidget(
+                      title: 'Register',
+                      hasBorder: false,
+                    ),
+                      
                     ),
                  TextButton(
                 onPressed: () {
@@ -134,14 +144,13 @@ class _RegisterViewState extends State<RegisterView> {
                   // Navigator.of(context)
                   //     .pushNamedAndRemoveUntil(loginRoute, (route) => false);
                 },
-                child: const Text(
-                  'Already Registered? Login Here!',
-                  style: TextStyle(
-                    fontFamily: 'Signatra',
-                    fontSize: 20.0,
-                    color: Colors.red,
-                  ),
-                ),
+                child:
+                     const ButtonWidget(
+                      title: 'Already Registered? Login Here!',
+                      hasBorder: true,
+                    ),
+                
+                 
               )
                   ],
                 ),

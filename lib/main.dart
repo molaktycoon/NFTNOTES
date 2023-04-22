@@ -9,6 +9,7 @@ import 'package:nftnotes/services/auth/firebase_auth_provider.dart';
 import 'package:nftnotes/views/login_view.dart';
 import 'package:nftnotes/views/register_view.dart';
 import 'package:nftnotes/views/verify_email_view.dart';
+import 'audio/recorder.dart';
 import 'notes/create_update_note_view.dart';
 import 'notes/note_view.dart';
 import 'views/forgot_password_view.dart';
@@ -26,6 +27,8 @@ void main() {
       ),
       routes: {
         createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
+                recordingStatus : (context) =>  const   RecorderHomeView(title: 'Voice Notes'),
+
       },
     ),
   );

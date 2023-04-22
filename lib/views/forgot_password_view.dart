@@ -6,6 +6,9 @@ import 'package:nftnotes/services/auth/bloc/auth_state.dart';
 import 'package:nftnotes/utilities/dialogs/error_dialog.dart';
 import 'package:nftnotes/utilities/dialogs/password_reset_email_send_dialog.dart';
 
+import '../ui/widgets/button_widget.dart';
+import '../ui/widgets/shared/globals.dart';
+
 class ForgetPasswordView extends StatefulWidget {
   const ForgetPasswordView({super.key});
 
@@ -46,6 +49,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Global.mediumBlue,
           title: const Text('Forget Password'),
         ),
         body: Padding(
@@ -54,27 +58,47 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
             children: [
               const Text(
                   'We could not process your request. Please make sure you are a register user'),
+              const SizedBox(
+                    height: 10.0,
+                  ),
               TextField(
                 keyboardType: TextInputType.emailAddress,
                 autocorrect: false,
                 autofocus: true,
                 controller: _controller,
-                decoration:
-                    const InputDecoration(hintText: 'Your email Address....'),
+                decoration: const InputDecoration(
+                    hintText: 'Your email Address....',
+                    // prefixIcon:  Icon(Icons.security),
+                    suffixIcon: Align(
+                      widthFactor: 1.0,
+                      heightFactor: 1.0,
+                      child: Icon(
+                        Icons.remove_red_eye,
+                      ),
+                    )),
               ),
               TextButton(
                 onPressed: () {
-                  context.read<AuthBloc>().add( const  AuthEventForgetPassword());
+                  context.read<AuthBloc>().add(const AuthEventForgetPassword());
                 },
-                child: const Text('Send me Password reset link'),
+                child: const ButtonWidget(
+                  title: 'Send me Password reset link',
+                  hasBorder: false,
+                ),
               ),
+                const SizedBox(
+                    height: 10.0,
+                  ),
               TextButton(
                 onPressed: () {
                   context.read<AuthBloc>().add(
                         const AuthEventLogOut(),
                       );
                 },
-                child: const Text('Back to login page'),
+                child: const ButtonWidget(
+                  title: 'Back to login page',
+                  hasBorder: true,
+                ),
               )
             ],
           ),
