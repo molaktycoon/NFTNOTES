@@ -54,60 +54,62 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const Text(
-                  'Please enter the email address on your NFTnotes Account, a password reset link will be send to you'),
-              const SizedBox(
-                    height: 10.0,
-                  ),
-              TextField(
-                keyboardType: TextInputType.emailAddress,
-                autocorrect: false,
-                autofocus: true,
-                controller: _controller,
-                decoration: const InputDecoration(
-                    hintText: 'youremail@here.com',
-                    // prefixIcon:  Icon(Icons.security),
-                    // suffixIcon: Align(
-                    //   widthFactor: 1.0,
-                    //   heightFactor: 1.0,
-                    //   child: Icon(
-                    //     Icons.remove_red_eye,
-                    //   ),
-                    // )
-                    ),
-              ),
-             const SizedBox(
-                    height: 10.0,
-                  ),
-              TextButton(
-                onPressed: () {
-                  final email = _controller.text;
-                  context.read<AuthBloc>().add(
-                     AuthEventForgetPassword(email: email),
-                     );
-                },
-                child: const ButtonWidget(
-                  title: 'Done',
-                  hasBorder: false,
-                ),
-              ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const Text(
+                    'Please enter the email address on your NFTnotes Account, a password reset link will be send to you'),
                 const SizedBox(
-                    height: 10.0,
-                  ),
-              TextButton(
-                onPressed: () {
-                  context.read<AuthBloc>().add(
-                        const AuthEventLogOut(),
-                      );
-                },
-                child: const ButtonWidget(
-                  title: 'Back to login page',
-                  hasBorder: true,
+                      height: 10.0,
+                    ),
+                TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  autocorrect: false,
+                  autofocus: true,
+                  controller: _controller,
+                  decoration: const InputDecoration(
+                      hintText: 'youremail@here.com',
+                      // prefixIcon:  Icon(Icons.security),
+                      // suffixIcon: Align(
+                      //   widthFactor: 1.0,
+                      //   heightFactor: 1.0,
+                      //   child: Icon(
+                      //     Icons.remove_red_eye,
+                      //   ),
+                      // )
+                      ),
                 ),
-              )
-            ],
+               const SizedBox(
+                      height: 10.0,
+                    ),
+                TextButton(
+                  onPressed: () {
+                    final email = _controller.text;
+                    context.read<AuthBloc>().add(
+                       AuthEventForgetPassword(email: email),
+                       );
+                  },
+                  child: const ButtonWidget(
+                    title: 'Done',
+                    hasBorder: false,
+                  ),
+                ),
+                  const SizedBox(
+                      height: 10.0,
+                    ),
+                TextButton(
+                  onPressed: () {
+                    context.read<AuthBloc>().add(
+                          const AuthEventLogOut(),
+                        );
+                  },
+                  child: const ButtonWidget(
+                    title: 'Back to login page',
+                    hasBorder: true,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

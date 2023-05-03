@@ -21,37 +21,39 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
         backgroundColor: Global.mediumBlue,
         title: const Text('Verify Email'),
       ),
-      body: Column(
-        children: [
-          const Text(
-              "We've sent you an email verification, Please open to verify your account"),
-          const Text(
-              "If you haven't received a verification email yet, press the button below"),
-          TextButton(
-            onPressed: () async {
-              context
-                  .read<AuthBloc>()
-                  .add(const AuthEventSendEmailVerification());
-              // AuthService.firebase().sendEmailVerification();
-            },
-            child: const ButtonWidget(
-              title: 'Send Email Verificaion',
-              hasBorder: false,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Text(
+                "We've sent you an email verification, Please open to verify your account"),
+            const Text(
+                "If you haven't received a verification email yet, press the button below"),
+            TextButton(
+              onPressed: () async {
+                context
+                    .read<AuthBloc>()
+                    .add(const AuthEventSendEmailVerification());
+                // AuthService.firebase().sendEmailVerification();
+              },
+              child: const ButtonWidget(
+                title: 'Send Email Verificaion',
+                hasBorder: false,
+              ),
             ),
-          ),
-          TextButton(
-            onPressed: () async {
-              context.read<AuthBloc>().add(const AuthEventLogOut());
-              // await AuthService.firebase().logOut();
-              // if (!mounted) return;
-              // Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false,);
-            },
-            child: const ButtonWidget(
-              title: 'Restart',
-              hasBorder: true,
-            ),
-          )
-        ],
+            TextButton(
+              onPressed: () async {
+                context.read<AuthBloc>().add(const AuthEventLogOut());
+                // await AuthService.firebase().logOut();
+                // if (!mounted) return;
+                // Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false,);
+              },
+              child: const ButtonWidget(
+                title: 'Restart',
+                hasBorder: true,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
