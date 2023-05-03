@@ -57,7 +57,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
           child: Column(
             children: [
               const Text(
-                  'We could not process your request. Please make sure you are a register user'),
+                  'Please enter the email address on your NFTnotes Account, a password reset link will be send to you'),
               const SizedBox(
                     height: 10.0,
                   ),
@@ -67,22 +67,29 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 autofocus: true,
                 controller: _controller,
                 decoration: const InputDecoration(
-                    hintText: 'Your email Address....',
+                    hintText: 'youremail@here.com',
                     // prefixIcon:  Icon(Icons.security),
-                    suffixIcon: Align(
-                      widthFactor: 1.0,
-                      heightFactor: 1.0,
-                      child: Icon(
-                        Icons.remove_red_eye,
-                      ),
-                    )),
+                    // suffixIcon: Align(
+                    //   widthFactor: 1.0,
+                    //   heightFactor: 1.0,
+                    //   child: Icon(
+                    //     Icons.remove_red_eye,
+                    //   ),
+                    // )
+                    ),
               ),
+             const SizedBox(
+                    height: 10.0,
+                  ),
               TextButton(
                 onPressed: () {
-                  context.read<AuthBloc>().add(const AuthEventForgetPassword());
+                  final email = _controller.text;
+                  context.read<AuthBloc>().add(
+                     AuthEventForgetPassword(email: email),
+                     );
                 },
                 child: const ButtonWidget(
-                  title: 'Send me Password reset link',
+                  title: 'Done',
                   hasBorder: false,
                 ),
               ),

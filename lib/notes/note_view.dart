@@ -10,6 +10,7 @@ import '../services/auth/bloc/auth_event.dart';
 import '../ui/widgets/shared/globals.dart';
 import '../utilities/dialogs/logout_dialog.dart';
 import 'notes_list_view.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -32,15 +33,14 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-                    backgroundColor: Global.mediumBlue,
-
+          backgroundColor: Global.mediumBlue,
           title: const Text('Your Notes'),
           actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
-                },
-                icon: const Icon(Icons.add)),
+            // IconButton(
+            //     onPressed: () {
+            //       Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
+            //     },
+            //     icon: const Icon(Icons.add)),
             PopupMenuButton(
               onSelected: (value) async {
                 switch (value) {
@@ -51,7 +51,7 @@ class _NotesViewState extends State<NotesView> {
                       context.read<AuthBloc>().add(
                             const AuthEventLogOut(),
                           );
-                      }
+                    }
                 }
               },
               itemBuilder: (context) {
@@ -93,17 +93,60 @@ class _NotesViewState extends State<NotesView> {
             }
           },
         ),
-        
-        floatingActionButton: FloatingActionButton(
-                    backgroundColor: Global.mediumBlue,
+        floatingActionButton: SpeedDial(
+          backgroundColor: Global.mediumBlue,
 
-    onPressed: () {
- Navigator.of(context).pushNamed(recordingStatus);
+          animatedIcon: AnimatedIcons.menu_close,
+          animatedIconTheme: const IconThemeData(size: 22.0),
+          // this is ignored if animatedIcon is non null
+          // child: Icon(Icons.add),
+          // visible: _dialVisible,
+          curve: Curves.bounceIn,
+          overlayColor: Colors.black,
+          overlayOpacity: 0.5,
+          // onOpen: () => print('OPENING DIAL'),
+          // onClose: () => print('DIAL CLOSED'),
+          tooltip: 'Speed Dial',
+          heroTag: 'speed-dial-hero-tag',
+          foregroundColor: Colors.black,
+          elevation: 8.0,
+          shape: const CircleBorder(),
 
-   },
-   child: const Icon(Icons.mic),
-   ),
-   
+          children: [
+            SpeedDialChild(
+                child: const Icon(Icons.mic),
+                backgroundColor: Colors.red,
+                label: 'Audio',
+                labelStyle: const TextStyle(),
+                onTap: () {
+                  Navigator.of(context).pushNamed(recordingStatus);
+                }),
+            SpeedDialChild(
+              child: const Icon(Icons.add),
+              backgroundColor: Colors.blue,
+              label: 'Add Note',
+              labelStyle: const TextStyle(),
+              onTap: () {
+                Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
+              },
+            ),
+            // SpeedDialChild(
+            //   child: const Icon(Icons.keyboard_voice),
+            //   backgroundColor: Colors.green,
+            //   label: 'Third',
+            //   labelStyle: const TextStyle(),
+
+            //   // onTap: () => print('THIRD CHILD'),
+            // ),
+          ],
+        )
+        //  FloatingActionButton(
+        //   backgroundColor: Global.mediumBlue,
+        //   onPressed: () {
+        //     Navigator.of(context).pushNamed(recordingStatus);
+        //   },
+        //   child: const Icon(Icons.mic),
+        // )
         );
   }
 }

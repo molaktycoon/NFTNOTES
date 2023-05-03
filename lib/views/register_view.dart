@@ -19,11 +19,13 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+   bool _passwordVisible = false;
 
   @override
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
+    _passwordVisible = true;
     super.initState();
   }
 
@@ -66,25 +68,32 @@ class _RegisterViewState extends State<RegisterView> {
                 enableSuggestions: false,
                 autocorrect: false,
                 autofocus: true,
+
                 keyboardType: TextInputType.emailAddress,
                 decoration:
                     const InputDecoration(hintText: 'Enter Your Email here'),
               ),
               TextField(
                 controller: _password,
-                obscureText: true,
+                obscureText: _passwordVisible,
                 enableSuggestions: false,
                 autocorrect: false,
                 decoration:
-                    const InputDecoration(hintText: 'Enter Your Password Here',
+                     InputDecoration(hintText: 'Enter Your Password Here',
                     // prefixIcon:  Icon(Icons.security),
-                    suffixIcon: Align(
-          widthFactor: 1.0,
-          heightFactor: 1.0,
-          child: Icon(
-            Icons.remove_red_eye,
-          ),
-          )
+                         suffixIcon: IconButton(
+                      
+                          icon:  Icon(
+                           _passwordVisible 
+                           ? Icons.visibility 
+                           : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        )
                     ),
               ),
               Center(

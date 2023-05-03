@@ -19,12 +19,14 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+    bool _passwordVisible = false;
   // CloseDialog? _closeDialogHandle;
 
   @override
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
+    _passwordVisible = true;
     super.initState();
   }
 
@@ -55,7 +57,7 @@ class _LoginViewState extends State<LoginView> {
 
           if (state.exception is UserNotFoundAuthException) {
             await showErrorDialog(
-                context, 'Cannot find  a user  wth the entered credentials');
+                context, 'Cannot find  a user  with the entered credentials');
           } else if (state.exception is WrongPasswordAuthException) {
             await showErrorDialog(context, 'Wrong Credentials');
           } else if (state.exception is GenericAuthException) {
@@ -141,9 +143,10 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   TextField(
                     controller: _password,
-                    obscureText: true,
+                    obscureText: _passwordVisible,
                     enableSuggestions: false,
                     autocorrect: false,
+                    keyboardType: TextInputType.visiblePassword,
                     cursorColor: Global.mediumBlue,
                     style: const TextStyle(
                       color: Global.mediumBlue,
@@ -170,14 +173,20 @@ class _LoginViewState extends State<LoginView> {
                           size: 18,
                           color: Global.mediumBlue,
                         ),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            // model.isVisible = !model.isVisible;
-                          },
-                          child: const Icon(
-                            Icons.remove_red_eye,
+                        suffixIcon: IconButton(
+                      
+                          icon:  Icon(
+                           _passwordVisible 
+                           ? Icons.visibility 
+                           : Icons.visibility_off,
                           ),
-                        )),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        )
+                        ),
                   ),
                   Container(
                     alignment: Alignment.topRight,

@@ -22,6 +22,11 @@ class AuthEventForgetPassword extends AuthEvent {
   final String? email;
 const AuthEventForgetPassword ({this.email});
 }
+
+class AuthEventAudioRecording extends AuthEvent {
+  const AuthEventAudioRecording();
+}
+
 class AuthEventSendEmailVerification extends AuthEvent {
   const AuthEventSendEmailVerification();
 }

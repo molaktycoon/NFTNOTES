@@ -27,6 +27,11 @@ class AuthStateForgetPassword extends AuthState {
   }) : super(isLoading: isLoading);
 }
 
+class AudioRecordingState extends AuthState {
+  const AudioRecordingState({required super.isLoading});
+  
+}
+
 class AuthStateRegistering extends AuthState {
   final Exception? exception;
   const AuthStateRegistering({

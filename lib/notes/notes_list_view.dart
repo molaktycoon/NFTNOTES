@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:nftnotes/services/cloud/cloud_note.dart';
 import 'package:nftnotes/utilities/dialogs/delete_dialog.dart';
 
+import '../ui/widgets/shared/globals.dart';
+
 typedef NoteCallBack = void Function(CloudNote note);
 
 class NotesListView extends StatelessWidget {
@@ -18,15 +20,24 @@ class NotesListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(           
+    final List<String> items = List<String>.generate(10000, (i) => '$i');
+
+    return ListView.separated(    
+             
       itemCount: notes.length,
       itemBuilder: (context, index) {
         final note = notes.elementAt(index);
         return ListTile(
+leading: CircleAvatar(
+        backgroundColor: const Color(0xff764abc),
+        child: Text(items[index]),
+      ),
+           
           onTap: () {
             onTap(note);
           },
           title: Text(
+            
             note.text,
             maxLines: 1,
             softWrap: true,
@@ -43,6 +54,13 @@ class NotesListView extends StatelessWidget {
               ),
         );
       },
+        separatorBuilder: (context, index) {
+           // <-- SEE HERE
+    return Divider(
+
+      color: Global.mediumBlue,
+    );
+  },
     );
   }
 }

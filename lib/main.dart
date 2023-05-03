@@ -17,6 +17,7 @@ import 'views/forgot_password_view.dart';
 void main() {
   runApp(
     MaterialApp(
+            debugShowCheckedModeBanner: false,
       title: 'NFT NOTE App',
       theme: ThemeData(
         primarySwatch: Colors.blue,

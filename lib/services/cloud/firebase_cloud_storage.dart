@@ -25,35 +25,41 @@ class FirebaseCloudStorage {
     }
   }
 
-  Stream<Iterable<CloudNote>> allNotes({required String ownerUserId}) =>
-      notes.snapshots().map((event) => event.docs
-          .map((doc) => CloudNote.fromSnapshot(doc))
-          .where((note) => note.ownerUserId == ownerUserId));
-
-  Future<Iterable<CloudNote>> getNotes({required String ownerUserId}) async {
-    try {
-      return await notes
-          .where(
-            ownerUserIdFieldName,
-            isEqualTo: ownerUserId,
-          )
-          .get()
-          .then(
-            (value) => value.docs.map((doc) => CloudNote.fromSnapshot(doc)
-                //move cod from normal function
-                // {
-                //   return CloudNote(
-                //     documentId: doc.id,
-                //     ownerUserId: doc.data()[ownerUserIdFieldName] as String,
-                //     text: doc.data()[textFieldName] as String,
-                //   );
-                // },
-                ),
-          );
-    } catch (e) {
-      throw CouldNotGetAllNotes();
-    }
+  Stream<Iterable<CloudNote>> allNotes({required String ownerUserId}) {
+    final allNotes = notes
+    .where(ownerUserIdFieldName, isEqualTo: ownerUserId)
+.snapshots()
+.map((event) => event.docs
+          .map((doc) => CloudNote.fromSnapshot(doc)));
+          return allNotes;
   }
+      
+//
+//We are not using the getNote method
+  // Future<Iterable<CloudNote>> getNotes({required String ownerUserId}) async {
+  //   try {
+  //     return await notes
+  //         .where(
+  //           ownerUserIdFieldName,
+  //           isEqualTo: ownerUserId,
+  //         )
+  //         .get()
+  //         .then(
+  //           (value) => value.docs.map((doc) => CloudNote.fromSnapshot(doc)
+  //               //move cod from normal function
+  //               // {
+  //               //   return CloudNote(
+  //               //     documentId: doc.id,
+  //               //     ownerUserId: doc.data()[ownerUserIdFieldName] as String,
+  //               //     text: doc.data()[textFieldName] as String,
+  //               //   );
+  //               // },
+  //               ),
+  //         );
+  //   } catch (e) {
+  //     throw CouldNotGetAllNotes();
+  //   }
+  // }
 
   Future<CloudNote> createNewNote({required String ownerUserId}) async {
     final document = await notes.add({
