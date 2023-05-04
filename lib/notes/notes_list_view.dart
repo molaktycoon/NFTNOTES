@@ -56,7 +56,7 @@ leading: CircleAvatar(
       },
         separatorBuilder: (context, index) {
            // <-- SEE HERE
-    return Divider(
+    return const Divider(
 
       color: Global.mediumBlue,
     );
